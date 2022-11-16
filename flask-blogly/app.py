@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User
+from models import db, connect_db, User, DEFAULT_IMAGE_URL
+# from seed import * 
 
 app = Flask(__name__)
 
@@ -14,6 +15,8 @@ debug = DebugToolbarExtension(app)
 connect_db(app)
 db.create_all()
 
+# Add sample data to database
+# exec(open("./seed.py").read())
 
 @app.route("/")
 def home():
@@ -42,7 +45,7 @@ def add_user():
     last = request.form["last"]
     url = request.form["url"]
     
-    user = User(first_name=first, last_name=last, image_url=url)
+    user = User(first_name=first, last_name=last, image_url=url or None)
     db.session.add(user)
     db.session.commit()
 
@@ -65,8 +68,12 @@ def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     user.first_name = request.form['first']
     user.last_name = request.form['last']
-    user.image_url = request.form['url']
-    
+    if request.form['url']:
+        user.image_url = request.form['url'] 
+    else:
+        user.image_url = DEFAULT_IMAGE_URL
+
+  
     db.session.add(user)
     db.session.commit()
     
@@ -82,21 +89,3 @@ def delete_user(user_id):
     
     return redirect("/users")
 
-# GET /users/new
-# Show an add form for users
-# POST /users/new
-# Process the add form, adding a new user and going back to /users
-# GET /users/[user-id]
-# Show information about the given user.
-# Have a button to get to their edit page, and to delete the user.
-
-# GET /users/[user-id]/edit
-# Show the edit page for a user.
-# Have a cancel button that returns to the detail page for a user, and a save button that updates the user.
-
-# POST /users/[user-id]/edit
-# Process the edit form, returning the user to the /users page.
-# POST /users/[user-id]/delete
-# Delete the user.
-# Add Testing
-# Add python tests to at least 4 of your routes.
