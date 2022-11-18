@@ -20,7 +20,7 @@ class UserViewsTestCase(TestCase):
     '''Tests for views of Users.'''
     
     def setUp(self):
-        '''Add sample user'''
+        '''Clear all users and add a sample user'''
         User.query.delete()
         
         user = User(first_name="Test", last_name="Dummy", image_url="https://imageio.forbes.com/specials-images/imageserve/513343414/960x0.jpg?format=jpg&width=960")

@@ -5,20 +5,40 @@ content %}
 
 	{% if user.image_url %}
 	<div class="col-sm-2 col-6">
-	  <img src="{{ user.image_url }}"
-		   alt="{{ user.full_name }}"
-		   class="img-fluid">
+		<img src="{{ user.image_url }}" alt="{{ user.full_name }}" class="img-fluid">
 	</div>
 	{% endif %}
 
 	<div class="col-sm-10 col-12">
 		<h1>{{user.first_name}} {{user.last_name}}</h1>
 
-		
+
 		<form action="/users/{{user.id}}/delete" method="POST">
+			<a href="/users" class="btn btn-outline-primary btn-sm">All Users</a>
 			<a href="/users/{{user.id}}/edit" class='btn btn-primary btn-sm'>Edit</a>
 			<button class='btn btn-danger btn-sm'>Delete</button>
 		</form>
 	</div>
+
+
 </div>
+
+{% if posts %}
+
+<h2>Posts</h2>
+
+<ul>
+	{% for post in posts %}
+	<li>
+		<a href="/posts/{{post.id}}">{{post.title}}</a>
+	</li>
+	{% endfor %}
+</ul>
+
+{% endif %}
+
+
+<a href="/users/{{user.id}}/posts/new" class='btn btn-primary btn-sm'>Add post</a>
+
+
 {% endblock %}
