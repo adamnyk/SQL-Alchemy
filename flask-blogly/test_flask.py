@@ -49,7 +49,7 @@ class UserViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertIn('<h1>Test Dummy</h1>', html)
             self.assertIn('Edit</a>', html)
-            self.assertIn('"https://imageio.forbes.com/specials-images/imageserve/513343414/960x0.jpg?format=jpg&width=960"</img>', html)
+            self.assertIn('https://imageio.forbes.com/specials-images/imageserve/513343414/960x0.jpg', html)
             
     def test_add_user(self):
         with app.test_client() as client:
