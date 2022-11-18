@@ -137,7 +137,7 @@ def show_post(post_id):
 
 @app.route('/posts/<int:post_id>/edit')
 def posts_edit_form(post_id):
-    '''Show a form to exit existing post'''
+    # '''Show a form to exit existing post'''
     post = Post.query.get_or_404(post_id)
     return render_template('posts/edit.html', post=post)
 
