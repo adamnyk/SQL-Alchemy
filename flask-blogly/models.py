@@ -56,8 +56,31 @@ class Post(db.Model):
     )
 
     user = db.relationship("User", backref=backref("posts", passive_deletes="all"))
+    tags = db.relationship("Tag", secondary="posts_tags", backref="posts")
 
     @property
     def friendly_date(self):
         """Return readable version of date"""
         return self.created_at.strftime("%b. %-d, %Y - %-I:%M %p")
+
+
+class Tag(db.Model):
+    """Descriptive tags for user posts."""
+
+    __tablename__ = "tags"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text, nullable=False, unique=True)
+
+
+    def __repr__(self):
+        return (f"<Tag: {self.id} {self.name}>")
+
+class PostTag(db.Model):
+    """Mapping of a post to a tag."""
+
+    __tablename__ = "posts_tags"
+
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey("tags.id"), primary_key=True)
+
